@@ -31,4 +31,25 @@ RSpec.describe 'Mechanic Show page' do
     expect(page).not_to have_content(@splash_mountain.name)
   end
 
+  it 'can add a ride to the mechanics workload' do 
+    visit "/mechanics/#{@amos.id}"
+
+    expect(page).to have_content(@amos.name)
+    expect(page).to have_content(@amos.years_experience)
+
+    expect(page).to have_content(@batcoaster.name)
+    expect(page).to have_content(@dueling_dragons.name)
+    expect(page).not_to have_content(@splash_mountain.name)
+
+    fill_in "Ride", with: "2"
+    click_on "Submit"
+
+    expect(current_path).to eq("/mechanics/#{@amos.id}")
+    expect(page).to have_content(@batcoaster.name)
+    expect(page).to have_content(@dueling_dragons.name)
+    expect(page).to have_content(@merry_go_round.name)
+
+    expect(page).not_to have_content(@splash_mountain.name)
+  end
+
 end
