@@ -41,7 +41,7 @@ RSpec.describe 'Mechanic Show page' do
     expect(page).to have_content(@dueling_dragons.name)
     expect(page).not_to have_content(@splash_mountain.name)
 
-    fill_in "Ride", with: "2"
+    fill_in "Ride", with: "#{@merry_go_round.id}"
     click_on "Submit"
 
     expect(current_path).to eq("/mechanics/#{@amos.id}")
