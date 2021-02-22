@@ -11,7 +11,12 @@ class MechanicsController < ApplicationController
 
   def update 
     @mechanic = Mechanic.find(params[:id])
-    RideMechanic.create!(ride_id: params[:ride], mechanic_id:params[:id])
-    redirect_to "/mechanics/#{@mechanic.id}"
+    if Ride.pluck(:id).include?(params[:ride].to_i)
+      RideMechanic.create!(ride_id: params[:ride], mechanic_id:params[:id])
+      redirect_to "/mechanics/#{@mechanic.id}"
+    else
+      flash[:error] = "Ride id does not exist"
+      redirect_to "/mechanics/#{@mechanic.id}"
+    end
   end
 end

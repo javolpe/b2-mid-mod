@@ -51,5 +51,26 @@ RSpec.describe 'Mechanic Show page' do
 
     expect(page).not_to have_content(@splash_mountain.name)
   end
+  it 'displays flash message if adding ride id that doesnt exist' do 
+    visit "/mechanics/#{@amos.id}"
+
+    expect(page).to have_content(@amos.name)
+    expect(page).to have_content(@amos.years_experience)
+
+    expect(page).to have_content(@batcoaster.name)
+    expect(page).to have_content(@dueling_dragons.name)
+    expect(page).not_to have_content(@splash_mountain.name)
+
+    fill_in "Ride", with: "#{@merry_go_round.id + 10}"
+    click_on "Submit"
+
+    expect(current_path).to eq("/mechanics/#{@amos.id}")
+    expect(page).to have_content(@batcoaster.name)
+    expect(page).to have_content(@dueling_dragons.name)
+    expect(page).to have_content("Ride id does not exist")
+
+    expect(page).not_to have_content(@merry_go_round.name)
+    expect(page).not_to have_content(@splash_mountain.name)
+  end
 
 end
